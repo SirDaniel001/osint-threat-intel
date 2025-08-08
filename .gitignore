@@ -5,3 +5,6 @@ logs/
 *.log
 data/
 
+.env
+.env
+.env

@@ -1,62 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Threats Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Threats</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="/">OSINT Dashboard</a>
-        <div class="navbar-nav">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link active" href="/threats">Threats</a>
+<body>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Recent Threats</h2>
+        <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+    </div>
+
+    <form class="row mb-3" method="get">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control" placeholder="Keyword" value="{{ keyword }}">
         </div>
-    </nav>
+        <div class="col-md-4">
+            <input type="text" name="source" class="form-control" placeholder="Source" value="{{ source }}">
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
 
-    <div class="container mt-4">
-        <h2 class="mb-4">Recent Threats</h2>
-
-        <form method="get" class="row mb-4">
-            <div class="col-md-4">
-                <input type="text" class="form-control" name="keyword" placeholder="Filter by keyword" value="{{ keyword }}">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" name="source" placeholder="Filter by source" value="{{ source }}">
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Search</button>
-            </div>
-        </form>
-
-        <a href="/export-csv" class="btn btn-outline-primary mb-3">⬇ Export as CSV</a>
-
-        <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Source</th>
-                    <th>Type</th>
-                    <th>Keyword</th>
-                    <th>Domain</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Source</th>
+                <th>Type</th>
+                <th>Keyword</th>
+                <th>Domain</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for threat in threats %}
-                <tr class="{% if threat[2] == 'phishing' %}table-warning{% elif threat[2] == 'malware' %}table-danger{% endif %}">
-                    <td>{{ threat[0] }}</td>
-                    <td>{{ threat[1] }}</td>
-                    <td>{{ threat[2] }}</td>
-                    <td>{{ threat[3] }}</td>
-                    <td>{{ threat[4] }}</td>
-                    <td>{{ threat[5] }}</td>
-                </tr>
+            <tr>
+                <td>{{ threat[0] }}</td>
+                <td>{{ threat[1] }}</td>
+                <td>{{ threat[2] }}</td>
+                <td>{{ threat[3] }}</td>
+                <td>{{ threat[4] }}</td>
+                <td>{{ threat[5] }}</td>
+            </tr>
             {% endfor %}
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="/export-csv" class="btn btn-success btn-sm">Export CSV</a>
         <nav>
-            <ul class="pagination">
+            <ul class="pagination mb-0">
                 {% if page > 1 %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page - 1 }}&keyword={{ keyword }}&source={{ source }}">Previous</a>
@@ -68,6 +64,6 @@
             </ul>
         </nav>
     </div>
+</div>
 </body>
 </html>
-

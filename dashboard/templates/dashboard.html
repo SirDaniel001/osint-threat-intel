@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Threat Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Threat Dashboard</h2>
+                <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h5>Threats by Type</h5>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h5>Threats by Source</h5>
+                    <canvas id="barChart"></canvas>
+                </div>
+                <div class="col-md-12 mb-4">
+                    <h5>Threats Over Time</h5>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const pieData = {
+        labels: {{ chart_data.by_type | map(attribute=0) | list | tojson | safe }},
+        datasets: [{
+            label: 'Threats by Type',
+            data: {{ chart_data.by_type | map(attribute=1) | list | tojson | safe }},
+            backgroundColor: ['#dc3545', '#ffc107', '#198754', '#0d6efd']
+        }]
+    };
+
+    const barData = {
+        labels: {{ chart_data.by_source | map(attribute=0) | list | tojson | safe }},
+        datasets: [{
+            label: 'Threats by Source',
+            data: {{ chart_data.by_source | map(attribute=1) | list | tojson | safe }},
+            backgroundColor: '#0d6efd'
+        }]
+    };
+
+    const lineData = {
+        labels: {{ chart_data.by_date | map(attribute=0) | list | tojson | safe }},
+        datasets: [{
+            label: 'Threats Over Time',
+            data: {{ chart_data.by_date | map(attribute=1) | list | tojson | safe }},
+            borderColor: '#198754',
+            fill: false,
+            tension: 0.1
+        }]
+    };
+
+    const pieChart = new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: pieData
+    });
+
+    const barChart = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: barData
+    });
+
+    const lineChart = new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: lineData
+    });
+
+    // Chart click behavior
+    document.getElementById('pieChart').onclick = function (evt) {
+        const activePoints = pieChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+        if (activePoints.length) {
+            const label = pieData.labels[activePoints[0].index];
+            window.location.href = `/threats?type=${encodeURIComponent(label)}`;
+        }
+    };
+
+    document.getElementById('barChart').onclick = function (evt) {
+        const activePoints = barChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+        if (activePoints.length) {
+            const label = barData.labels[activePoints[0].index];
+            window.location.href = `/threats?source=${encodeURIComponent(label)}`;
+        }
+    };
+</script>
+</body>
+</html>

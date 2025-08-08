@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.log
+*.pdf
+data/charts/
+.env
+.git
+*.png
+*.jpg
+*.jpeg
+*.DS_Store
