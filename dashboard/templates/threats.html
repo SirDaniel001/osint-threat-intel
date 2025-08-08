@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Threat Dashboard</title>
+    <title>Threats Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body class="bg-light">
@@ -15,6 +15,18 @@
 
     <div class="container mt-4">
         <h2 class="mb-4">Recent Threats</h2>
+
+        <form method="get" class="row mb-4">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="keyword" placeholder="Filter by keyword" value="{{ keyword }}">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="source" placeholder="Filter by source" value="{{ source }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
 
         <a href="/export-csv" class="btn btn-outline-primary mb-3">⬇ Export as CSV</a>
 
@@ -42,6 +54,20 @@
             {% endfor %}
             </tbody>
         </table>
+
+        <nav>
+            <ul class="pagination">
+                {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page - 1 }}&keyword={{ keyword }}&source={{ source }}">Previous</a>
+                </li>
+                {% endif %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page + 1 }}&keyword={{ keyword }}&source={{ source }}">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </body>
 </html>
+
