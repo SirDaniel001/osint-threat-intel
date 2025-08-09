@@ -341,4 +341,34 @@ scripts/day17_pdf_report.py
 
 dashboard/app.py, templates/, .env, access.log
 
+# 📅 Day 18 – Automated PDF OSINT Threat Report with AI Cover & Email Delivery
+📅 Day 18 – Automated PDF Threat Reports with AI Cover & Email Delivery
+Date: 2025-08-09
 
+✔ Developed day18_pdf_report.py to automatically generate a professional PDF threat intelligence report
+✔ Integrated AI-generated cybersecurity-themed cover image for a polished first impression
+✔ Implemented multi-page PDF layout with:
+
+Cover page (full-page AI image)
+
+Summary statistics (total threats, top sources, top types)
+
+Visual analytics (pie, bar, and line charts via Matplotlib)
+
+Recent threat listings (latest 10 threats with full details)
+✔ Connected to SQLite database to pull live threat data:
+
+Top 5 sources
+
+Top 5 types
+
+Threat counts over time
+
+Latest 10 records
+✔ Added email automation via Gmail SMTP with secure .env credentials (no plaintext passwords in code)
+✔ Designed reports folder structure for consistent archiving: /reports/day18_threat_report_YYYYMMDD.pdf
+✔ Tested report generation end-to-end — verified PDF received in inbox 📧
+✔ Updated requirements.txt to pin all dependencies for full reproducibility
+✔ Maintained modular structure for easy reuse in future reporting workflows
+
+📌 Impact: This completes a fully automated Daily Threat Intelligence Reporting System, delivering actionable intelligence directly to email every morning with minimal human intervention.

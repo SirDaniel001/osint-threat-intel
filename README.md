@@ -306,46 +306,73 @@ osint-threat-intel/
 ├── access.log                  # Threats route access log
 └── README.md
 
-## 💻 Requirements
+### 📅 Day 18 — Automated PDF Intelligence Report with AI Cover
 
-💻 Requirements
-Python 3.10+
+##  📅 Day 18 — Automated PDF Intelligence Report with AI Cover & Flowchart Overlay
+Objective:
+Enhance the OSINT Threat Intelligence Dashboard with automated PDF reporting, AI-generated visuals, flowchart diagrams, and email delivery.
 
-SQLite
+Tasks Completed:
 
-Telegram Bot API
+Developed scripts/day18_pdf_report.py:
 
-Libraries:
+Fetches real-time threat statistics from the SQLite database.
 
-pip install requests pandas rich fpdf python-telegram-bot
+Generates charts for:
 
-- Python 3.10+  
-- SQLite3  
-- Required Packages:
-  ```bash
-  pip install -r requirements.txt
+Top 5 Threat Sources
 
-💻 Requirements
-Python 3.10+
+Top 5 Threat Types
 
-SQLite 3
+Threats Timeline
 
-📦 Required Packages:pip install -r requirements.txt
-Dependencies:
+Integrates AI-generated cover image (reports/day18_ai_image.png).
 
-requests
+Overlays a transparent flowchart (reports/day18_flowchart_transparent.png) on the cover page.
 
-pandas
+Embeds full-size flowchart inside the PDF for process visualization.
 
-python-telegram-bot
+Compiles all data and visuals into a professionally formatted PDF.
 
-rich
+Emails the PDF automatically via Gmail SMTP.
 
-fpdf2
+New Files & Updates:
 
-matplotlib
+scripts/day18_pdf_report.py — Main PDF report generation and email automation script with charting & flowchart overlay.
 
-python-dotenv
+reports/day18_ai_image.png — AI-generated cover image for the report.
+
+reports/day18_flowchart.png — Original automation flowchart.
+
+reports/day18_flowchart_transparent.png — Transparent overlay version for the cover page.
+
+reports/day18_threat_report_YYYYMMDD.pdf — Generated PDF with charts, flowchart, and threat stats.
+
+Environment Variables:
+
+EMAIL_SENDER
+
+EMAIL_PASSWORD (Gmail App Password)
+
+EMAIL_RECEIVER
+
+Automation:
+
+Configured cron job to run day18_pdf_report.py daily at a set time (example: 10:35 AM).
+
+Integrated with the existing daily_report.sh for text-based daily reports.
+
+Outcome:
+
+Fully automated daily threat intelligence PDF generation.
+
+Enhanced professional presentation with AI-generated cover and visualized workflow.
+
+Seamless email delivery for analyst review without manual intervention.
+
+Improved clarity 
+
+
 
 🛡 Ethical Use
 This project is built for educational and ethical security research purposes only.
