@@ -46,3 +46,7 @@ sqlite-utils==3.36
 pytest==8.3.3
 tqdm==4.67.1
 pysqlite3-binary==0.5.4
+
+# Day 25 dependencies — Documentation & GitHub integration
+# No new pip packages required
+# (Optional) For Git automation: gitpython==3.1.43
