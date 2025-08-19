@@ -372,3 +372,222 @@ Latest 10 records
 ✔ Maintained modular structure for easy reuse in future reporting workflows
 
 📌 Impact: This completes a fully automated Daily Threat Intelligence Reporting System, delivering actionable intelligence directly to email every morning with minimal human intervention.
+#  ## 📅 Day 19 — Advanced Filtering & Search in OSINT Dashboard
+
+**Objective:**  
+Enhance the OSINT Threat Intelligence Dashboard with advanced search, filtering, and API integration for real-time threat queries.
+
+**Tasks Completed:**
+- Implemented advanced filtering in `/threats` route:
+  - Keyword search
+  - Source filtering
+  - Threat type filtering
+  - Domain filtering
+  - Date range filtering (`date_from` & `date_to`)
+- Updated `app.py`:
+  - New `fetch_threats()` supports multiple filter criteria
+  - Added `count_threats()` to support API pagination
+  - New `/api/threats` endpoint returning JSON data with total, page, per_page
+  - Secure parameterized SQL queries to prevent injection
+- Updated `templates/threats.html`:
+  - Added full filter form (keyword, source, type, domain, date range)
+  - Integrated AJAX to fetch and update threats table without page reload
+  - Pagination dynamically updates without reloading the entire page
+- API test via `curl`:
+  ```bash
+  curl -u SirDaniel:Daniel@001 "http://127.0.0.1:5000/api/threats?keyword=CBK&per_page=5&page=1"
+
+## ✅ Day 20 — Automation Meets Threat Intel
+
+**Date:** 2025-08-11  
+
+### 🏆 Today’s Wins
+- **Database Validation & Repair**
+  - Fixed `osint_threats.db` so it matches all Flask dashboard queries.
+  - Populated with realistic sample data for development testing.
+
+- **Dashboard Stability**
+  - Eliminated the `metrics is undefined` Jinja2 error.
+  - All charts and metrics load without manual page refreshes.
+  - Risk scoring now displays cleanly with color-coded badges.
+
+- **PDF Report Automation**
+  - Built `day20_pdf_report.py` from scratch.
+  - Styled PDF layout with consistent section colors.
+  - Displays total threats, top 5 sources, top 5 types, and the 10 most recent threats.
+  - Removed problematic emojis to fix Unicode export errors.
+
+- **Email Integration**
+  - Implemented Gmail SMTP sending with App Password authentication.
+  - Securely stored credentials in `.env`.
+  - Email includes the PDF attachment + clear terminal confirmation on success.
+
+### 💡 Key Insights
+- App passwords bypass Gmail’s “Less Secure App” blocking and are essential for automation.
+- PDF generation works best with strict ASCII for compatibility.
+- Secure environment variables prevent credential leaks and keep automation scripts safe to share.
+
+### 🚀 Momentum for Tomorrow
+- Add **charts directly into PDF reports** for at-a-glance visuals.
+- Schedule daily report sending with `cron` to remove manual triggers.
+- Continue refining styling for both email body and PDF.
+
+## ✅ Day 21 — Clickable Charts & Unified Metrics
+Date: 2025-08-13
+
+🏆 Today’s Wins
+Interactive Chart Filtering
+
+Added JavaScript event handlers so clicking on any chart segment automatically filters and opens the relevant threats view.
+
+Enabled filtering by type, source, and detection date directly from the dashboard charts.
+
+Consistent Reporting Periods
+
+Updated backend logic so phishing_count, darkweb_hits, and whois_suspicious now match the 14-day trend chart period for accurate comparisons.
+
+Ensured both PDF and HTML reports pull from the same unified timeframe.
+
+Navigation & UX Enhancements
+
+Fixed / route to redirect to /dashboard to eliminate the 404 error on load.
+
+Refined dashboard.html layout for better responsiveness and visual balance.
+
+Data Safety & Stability
+
+Added null-checks in templates to prevent empty values from breaking the UI.
+
+Verified that new features work with both real and sample datasets.
+
+💡 Key Insights
+Clickable chart interactions speed up investigations by reducing the need for manual filtering.
+
+Aligning all metrics to the same timeframe prevents misleading trends and KPI discrepancies.
+
+Route redirection improves user experience and prevents broken entry points.
+
+🚀 Momentum for Tomorrow
+Embed clickable trend charts directly into PDF reports for offline interactivity.
+
+Add advanced filtering in the threats table (multi-select types, date ranges).
+
+Start integrating dark web scraping results into the live dashboard for real-time alerts.
+
+## ✅ Day 22 — Dark Mode & Dynamic Chart Themes
+Date: 2025-08-13
+
+🏆 Today’s Wins
+
+Dark Mode Implementation
+
+Added a Dark Mode toggle button in the navbar for instant theme switching.
+
+Saved user theme preference in localStorage so it persists across sessions.
+
+Applied smooth transitions to background, text, cards, tables, and lists for a premium feel.
+
+Dynamic Chart Theme Switching
+
+Charts now automatically recolor based on the selected theme.
+
+Implemented high-contrast palettes for dark mode while retaining original colors in light mode.
+
+Added 500 ms animations so chart color changes feel smooth instead of abrupt.
+
+UI & UX Enhancements
+
+Refined metric card hover animations for better interactivity.
+
+Improved badge contrast for risk scores in both themes.
+
+Ensured tables, chart legends, and list groups remain fully readable in dark mode.
+
+Event-Driven Chart Refresh
+
+Added a custom themeChange event in darkmode.js.
+
+Chart rendering code listens for this event and rebuilds charts dynamically without page reload.
+
+💡 Key Insights
+
+Dark Mode greatly improves readability during extended investigations, especially in low-light environments.
+
+Dynamic chart recoloring ensures visual consistency without requiring user refreshes.
+
+Smooth transitions make the dashboard feel more polished and professional.
+
+🚀 Momentum for Tomorrow
+
+Begin integrating real-time OSINT data feeds into charts so visualizations update without manual refresh.
+
+Explore adding a theme-aware PDF export to match the current dashboard style in reports.
+
+### ✅ Day 23 — Full Threat Intelligence Pipeline
+
+Date: 2025-08-16
+
+🏆 Today’s Wins
+
+Phishing Data Collection
+
+Implemented Google search scraping for phishing-related queries.
+
+Collected fresh Pastebin archives and extracted phishing URLs.
+
+Deduplicated and saved results into structured CSV files.
+
+Domain Extraction & Cleaning
+
+Extracted unique domains from collected URLs.
+
+Stored clean domains into output/clean_phishing_domains.csv for analysis.
+
+Database Integration
+
+Automated insertion of new phishing domains into threats.db.
+
+Prevented duplication by validating against existing records.
+
+Alerts & Reporting
+
+Sent real-time Telegram alerts for newly discovered threats.
+
+Delivered a daily summary report with the latest 20 domains.
+
+Successfully connected the pipeline from scraping → database → alerting.
+
+💡 Key Insights
+
+Automating scraping + domain extraction + database insertion reduces manual effort and ensures consistency.
+
+Telegram integration provides immediate visibility of new phishing threats.
+
+Building the pipeline in stages (scraper → extractor → DB → alerts) ensured smooth debugging and integration.
+
+🚀 Momentum for Tomorrow
+
+Enhance domain reputation scoring (e.g., using VirusTotal or AbuseIPDB API).
+
+Add visualization of phishing domain trends directly in the dashboard.
+
+Automate pipeline execution via cron for scheduled intelligence updates.
+## # ✅ Day 24 – Database Performance & Testing
+
+## Achievements
+- Refactored `insert_script.py` to support clean, reusable inserts.
+- Implemented unit test for insert correctness (`tests/test_insert_script.py`).
+- Added performance benchmark comparing legacy vs optimized bulk insert (`tests/test_insert_comparison.py`).
+- Created automated performance test for query speed (`tests/test_query_perf.py`).
+- Achieved blazing insert speed (~200K rec/s).
+- Verified fast query response for domain, date, and keyword lookups.
+
+## Lessons Learned
+- `executemany` in SQLite massively improves bulk insert performance.
+- Proper testing structure (`tests/`, `PYTHONPATH=.`) avoids import headaches.
+- Performance tests ensure the database won’t choke at scale.
+- Always automate query benchmarks to catch regressions early.
+
+## Status
+🎩 All tests passing — pipeline is optimized, tested, and production-ready.
+

@@ -2,29 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Threats</title>
+    <title>Threats Database</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Recent Threats</h2>
+        <h2>Threats Database</h2>
         <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
     </div>
 
-    <form class="row mb-3" method="get">
-        <div class="col-md-4">
+    <!-- Filter Form -->
+    <form id="filter-form" class="row g-2 mb-3">
+        <div class="col-md-2">
             <input type="text" name="keyword" class="form-control" placeholder="Keyword" value="{{ keyword }}">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <input type="text" name="source" class="form-control" placeholder="Source" value="{{ source }}">
         </div>
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-primary w-100">Search</button>
+        <div class="col-md-2">
+            <input type="text" name="type" class="form-control" placeholder="Type" value="{{ threat_type }}">
+        </div>
+        <div class="col-md-2">
+            <input type="text" name="domain" class="form-control" placeholder="Domain" value="{{ domain }}">
+        </div>
+        <div class="col-md-2">
+            <input type="date" name="date_from" class="form-control" value="{{ date_from }}">
+        </div>
+        <div class="col-md-2">
+            <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
+        </div>
+        <div class="col-12 mt-2">
+            <button type="submit" class="btn btn-primary w-100">Search / Filter</button>
         </div>
     </form>
 
-    <table class="table table-bordered table-striped">
+    <!-- Table -->
+    <table class="table table-bordered table-striped" id="threats-table">
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
@@ -32,38 +47,92 @@
                 <th>Type</th>
                 <th>Keyword</th>
                 <th>Domain</th>
-                <th>Date</th>
+                <th>Date Detected</th>
             </tr>
         </thead>
         <tbody>
-            {% for threat in threats %}
-            <tr>
-                <td>{{ threat[0] }}</td>
-                <td>{{ threat[1] }}</td>
-                <td>{{ threat[2] }}</td>
-                <td>{{ threat[3] }}</td>
-                <td>{{ threat[4] }}</td>
-                <td>{{ threat[5] }}</td>
-            </tr>
-            {% endfor %}
+            {% if threats and threats|length > 0 %}
+                {% for threat in threats %}
+                <tr>
+                    <td>{{ threat[0] }}</td>
+                    <td>{{ threat[1] }}</td>
+                    <td>{{ threat[2] }}</td>
+                    <td>{{ threat[3] }}</td>
+                    <td>{{ threat[4] }}</td>
+                    <td>{{ threat[5] }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No results found</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 
+    <!-- Pagination -->
     <div class="d-flex justify-content-between align-items-center">
         <a href="/export-csv" class="btn btn-success btn-sm">Export CSV</a>
         <nav>
-            <ul class="pagination mb-0">
+            <ul class="pagination mb-0" id="pagination">
                 {% if page > 1 %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page - 1 }}&keyword={{ keyword }}&source={{ source }}">Previous</a>
                 </li>
                 {% endif %}
+                {% if threats and threats|length > 0 %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page + 1 }}&keyword={{ keyword }}&source={{ source }}">Next</a>
                 </li>
+                {% endif %}
             </ul>
         </nav>
     </div>
 </div>
+
+<script>
+$(document).ready(function () {
+    $("#filter-form").on("submit", function (e) {
+        e.preventDefault();
+        fetchThreats(1);
+    });
+
+    function fetchThreats(page) {
+        const formData = $("#filter-form").serialize() + "&page=" + page;
+        $.getJSON("/api/threats", formData, function (data) {
+            let rows = "";
+            if (data.threats.length > 0) {
+                data.threats.forEach(function (t) {
+                    rows += `<tr>
+                        <td>${t.id}</td>
+                        <td>${t.source}</td>
+                        <td>${t.type}</td>
+                        <td>${t.keyword}</td>
+                        <td>${t.domain}</td>
+                        <td>${t.date_detected}</td>
+                    </tr>`;
+                });
+            } else {
+                rows = `<tr><td colspan="6" class="text-center text-muted">No results found</td></tr>`;
+            }
+            $("#threats-table tbody").html(rows);
+
+            let pagination = "";
+            if (page > 1) {
+                pagination += `<li class="page-item"><a class="page-link" href="#" data-page="${page - 1}">Previous</a></li>`;
+            }
+            if (page * data.per_page < data.total) {
+                pagination += `<li class="page-item"><a class="page-link" href="#" data-page="${page + 1}">Next</a></li>`;
+            }
+            $("#pagination").html(pagination);
+        });
+    }
+
+    $("#pagination").on("click", "a", function (e) {
+        e.preventDefault();
+        fetchThreats($(this).data("page"));
+    });
+});
+</script>
 </body>
 </html>

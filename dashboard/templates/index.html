@@ -1,22 +1,106 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home | OSINT Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-</head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="/">OSINT Dashboard</a>
-        <div class="navbar-nav">
-            <a class="nav-link active" href="/">Home</a>
-            <a class="nav-link" href="/threats">Threats</a>
-        </div>
-    </nav>
+{% extends "base.html" %}
+{% block content %}
 
-    <div class="container mt-4">
-        <h1>Welcome, SirDaniel</h1>
-        <p>This dashboard shows live OSINT-based threat intelligence targeting Kenyan financial systems.</p>
-        <a href="/threats" class="btn btn-primary">View Threats</a>
+<!-- Action Buttons -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="/download-pdf" class="btn btn-custom">
+        <i class="fas fa-file-pdf"></i> Download PDF Report
+    </a>
+    <a href="/view-html" class="btn btn-custom">
+        <i class="fas fa-eye"></i> View HTML Report
+    </a>
+</div>
+
+<!-- Metrics Row -->
+<div class="row g-3">
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card">
+            <h6>Total Threats</h6>
+            <h3><i class="fas fa-exclamation-circle text-danger"></i> {{ total_threats }}</h3>
+            <small class="text-muted">Last 24 hrs</small>
+        </div>
     </div>
-</body>
-</html>
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card">
+            <h6>Avg Risk (score)</h6>
+            <h3><i class="fas fa-chart-line text-warning"></i> {{ avg_risk }}%</h3>
+            <small class="text-muted">Based on risk analysis</small>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card">
+            <h6>Top Source</h6>
+            <h3><i class="fas fa-database text-primary"></i> {{ top_source }}</h3>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="metric-card">
+            <h6>Top Type</h6>
+            <h3><i class="fas fa-skull-crossbones text-danger"></i> {{ top_type }}</h3>
+        </div>
+    </div>
+</div>
+
+<!-- Threats Table -->
+<div class="mt-4">
+    <h5>Recent Threats</h5>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Source</th>
+                <th>Type</th>
+                <th>Keyword</th>
+                <th>Domain</th>
+                <th>Date</th>
+                <th>Risk</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in recent_threats %}
+            <tr>
+                <td>{{ t.source }}</td>
+                <td>{{ t.type }}</td>
+                <td>{{ t.keyword }}</td>
+                <td><a href="{{ t.domain_link }}" target="_blank">{{ t.domain }}</a></td>
+                <td>{{ t.date }}</td>
+                <td>
+                    {% if t.risk == "High" %}
+                        <span class="badge badge-high">{{ t.risk }}</span>
+                    {% elif t.risk == "Medium" %}
+                        <span class="badge badge-medium">{{ t.risk }}</span>
+                    {% else %}
+                        <span class="badge badge-low">{{ t.risk }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-3 mt-4">
+    <div class="col-md-6">
+        <div class="chart-container">
+            <h6>Threat Type Overview</h6>
+            <canvas id="typeChart"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="chart-container">
+            <h6>Analytics</h6>
+            <canvas id="analyticsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-3">
+    <div class="col-12">
+        <div class="chart-container">
+            <h6>Threats Per Day</h6>
+            <canvas id="trendChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

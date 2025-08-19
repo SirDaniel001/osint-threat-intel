@@ -1,0 +1,4 @@
+[
+  {"indicator": "cbk-security.com", "type": "domain", "source": "test_dark", "context": "Seeded dark web CBK mention"},
+  {"indicator": "mpesa-verify-kenya.net", "type": "domain", "source": "test_dark", "context": "Seeded dark web MPESA mention"}
+]

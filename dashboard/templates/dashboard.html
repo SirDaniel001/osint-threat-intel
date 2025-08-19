@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     .card-metric { min-height: 100px; }
     .risk-badge-low { background:#198754; color:#fff }
@@ -15,10 +17,15 @@
   </style>
 </head>
 <body class="bg-light">
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">OSINT Dashboard</a>
-      <div class="d-flex">
+      <a class="navbar-brand" href="/dashboard">OSINT Dashboard</a>
+      <div class="d-flex align-items-center">
+        <!-- Dark Mode Toggle -->
+        <button id="darkModeToggle" class="btn btn-sm btn-light me-2">
+          <i class="fas fa-moon"></i> Dark Mode
+        </button>
         <a class="btn btn-outline-light btn-sm me-2" href="/threats">Threats</a>
         <a class="btn btn-danger btn-sm" href="/logout">Logout</a>
       </div>
@@ -26,6 +33,13 @@
   </nav>
 
   <div class="container my-4">
+
+    <!-- 📄 PDF & Report Buttons -->
+    <div class="mb-4 d-flex gap-2">
+      <a class="btn btn-primary btn-sm" href="/report.pdf">⬇ Download PDF Report</a>
+      <a class="btn btn-outline-secondary btn-sm" href="/report" target="_blank">👁 Preview HTML Report</a>
+    </div>
+
     <!-- Metric Cards -->
     <div class="row g-3 mb-4">
       <div class="col-md-3">
@@ -120,7 +134,7 @@
         </div>
       </div>
 
-      <!-- Right column: Top lists + charts -->
+      <!-- Right column: Top lists + mini chart -->
       <div class="col-lg-5 mb-4">
         <div class="card mb-3 shadow-sm">
           <div class="card-body">
@@ -156,8 +170,7 @@
 
         <div class="card shadow-sm">
           <div class="card-body">
-            <h6 class="card-title">Placeholders: Charts</h6>
-            <p class="small text-muted">Charts are shown on the charts tab — click to view analytics.</p>
+            <h6 class="card-title">Threat Type Overview</h6>
             <canvas id="miniPie" height="150"></canvas>
           </div>
         </div>
@@ -182,62 +195,81 @@
 
   </div>
 
+<!-- Smooth Chart Rebuild Function -->
 <script>
-  const typeLabels = {{ chart_data.by_type | map(attribute=0) | list | tojson | safe }};
-  const typeCounts = {{ chart_data.by_type | map(attribute=1) | list | tojson | safe }};
+let chartInstances = [];
 
-  const sourceLabels = {{ chart_data.by_source | map(attribute=0) | list | tojson | safe }};
-  const sourceCounts = {{ chart_data.by_source | map(attribute=1) | list | tojson | safe }};
+function createCharts() {
+    // Destroy old charts for smooth re-init
+    chartInstances.forEach(c => c.destroy());
+    chartInstances = [];
 
-  const dateLabels = {{ chart_data.by_date | map(attribute=0) | list | tojson | safe }};
-  const dateCounts = {{ chart_data.by_date | map(attribute=1) | list | tojson | safe }};
+    const darkMode = document.body.classList.contains('dark-mode');
+    const textColor = darkMode ? '#e0e0e0' : '#212529';
+    const gridColor = darkMode ? '#444' : '#ddd';
+    const pieColors = darkMode
+        ? ['#ff6b6b', '#ffd93d', '#6bcB77', '#4dabf7']
+        : ['#dc3545', '#ffc107', '#198754', '#0d6efd'];
 
-  new Chart(document.getElementById('miniPie'), {
-    type: 'doughnut',
-    data: {
-      labels: typeLabels,
-      datasets: [{ data: typeCounts, backgroundColor: ['#dc3545','#ffc107','#198754','#0d6efd'] }]
-    }
-  });
+    // Mini Pie Chart
+    const typeLabelsMini = {{ chart_data.by_type | map(attribute=0) | list | tojson | safe }};
+    const typeCountsMini = {{ chart_data.by_type | map(attribute=1) | list | tojson | safe }};
+    chartInstances.push(new Chart(document.getElementById('miniPie'), {
+        type: 'doughnut',
+        data: { labels: typeLabelsMini, datasets: [{ data: typeCountsMini, backgroundColor: pieColors }] },
+        options: { animation: { duration: 500 }, plugins: { legend: { labels: { color: textColor } } } }
+    }));
 
-  const typeChart = new Chart(document.getElementById('typeChart'), {
-    type: 'pie',
-    data: { labels: typeLabels, datasets: [{ data: typeCounts, backgroundColor: ['#dc3545','#ffc107','#198754','#0d6efd'] }] }
-  });
+    // Type Chart
+    fetch('/api/trends/by_type').then(res => res.json()).then(data => {
+        chartInstances.push(new Chart(document.getElementById('typeChart'), {
+            type: 'pie',
+            data: { labels: data.labels, datasets: [{ data: data.data, backgroundColor: pieColors }] },
+            options: { animation: { duration: 500 }, plugins: { legend: { labels: { color: textColor } } } }
+        }));
+    });
 
-  const sourceChart = new Chart(document.getElementById('sourceChart'), {
-    type: 'bar',
-    data: { labels: sourceLabels, datasets: [{ label: 'By Source', data: sourceCounts, backgroundColor:'#0d6efd' }] }
-  });
+    // Source Chart
+    fetch('/api/trends/by_source').then(res => res.json()).then(data => {
+        chartInstances.push(new Chart(document.getElementById('sourceChart'), {
+            type: 'bar',
+            data: { labels: data.labels, datasets: [{ label: 'By Source', data: data.data, backgroundColor: pieColors[3] }] },
+            options: {
+                animation: { duration: 500 },
+                plugins: { legend: { labels: { color: textColor } } },
+                scales: {
+                    x: { ticks: { color: textColor }, grid: { color: gridColor } },
+                    y: { ticks: { color: textColor }, grid: { color: gridColor } }
+                }
+            }
+        }));
+    });
 
-  const dateChart = new Chart(document.getElementById('dateChart'), {
-    type: 'line',
-    data: { labels: dateLabels, datasets: [{ label: 'Threats per Day', data: dateCounts, borderColor:'#198754', fill:false, tension:0.1 }] }
-  });
+    // Date Chart
+    fetch('/api/trends/by_date').then(res => res.json()).then(data => {
+        chartInstances.push(new Chart(document.getElementById('dateChart'), {
+            type: 'line',
+            data: { labels: data.labels, datasets: [{ label: 'Threats per Day', data: data.data, borderColor: pieColors[2], fill: false, tension: 0.1 }] },
+            options: {
+                animation: { duration: 500 },
+                plugins: { legend: { labels: { color: textColor } } },
+                scales: {
+                    x: { ticks: { color: textColor }, grid: { color: gridColor } },
+                    y: { ticks: { color: textColor }, grid: { color: gridColor } }
+                }
+            }
+        }));
+    });
+}
 
-  document.getElementById('typeChart').onclick = function(evt) {
-    let points = typeChart.getElementsAtEventForMode(evt, 'nearest', { intersect:true }, true);
-    if (points.length) {
-      const label = typeLabels[points[0].index];
-      window.location.href = `/threats?type=${encodeURIComponent(label)}`;
-    }
-  };
+// Rebuild charts when theme changes
+window.addEventListener('themeChange', createCharts);
 
-  document.getElementById('sourceChart').onclick = function(evt) {
-    let points = sourceChart.getElementsAtEventForMode(evt, 'nearest', { intersect:true }, true);
-    if (points.length) {
-      const label = sourceLabels[points[0].index];
-      window.location.href = `/threats?source=${encodeURIComponent(label)}`;
-    }
-  };
-
-  document.getElementById('dateChart').onclick = function(evt) {
-    let points = dateChart.getElementsAtEventForMode(evt, 'nearest', { intersect:true }, true);
-    if (points.length) {
-      const label = dateLabels[points[0].index];
-      window.location.href = `/threats?date=${encodeURIComponent(label)}`;
-    }
-  };
+// Initial load
+createCharts();
 </script>
+
+<!-- Dark Mode Script -->
+<script src="{{ url_for('static', filename='js/darkmode.js') }}"></script>
 </body>
 </html>

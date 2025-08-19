@@ -1,0 +1,16 @@
+[
+  {
+    "source": "phish_feed",
+    "threat_type": "phishing",
+    "domain": "example.com",
+    "keywords": ["login", "banking"],
+    "first_seen": "2025-08-18"
+  },
+  {
+    "source": "malware_feed",
+    "threat_type": "malware",
+    "domain": "malicious.org",
+    "keywords": ["trojan", "payload"],
+    "first_seen": "2025-08-17"
+  }
+]
