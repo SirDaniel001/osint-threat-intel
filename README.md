@@ -660,6 +660,62 @@ This guarantees the threat intelligence system can handle **large datasets quick
 - ✅ Database can handle **large-scale phishing feeds** efficiently.  
 - ✅ Clean testable pipeline for inserts, queries, and performance metrics.  
 
+## 📅 Day 25 — Documentation & GitHub Integration
+
+Date: 2025-08-19
+Status: ✅ Completed
+
+🔹 Overview
+Day 25 was all about solidifying the project foundation: creating full setup documentation, fixing scraper issues, ensuring the dashboard works, and syncing everything to GitHub with SSH authentication.
+This makes the project reproducible, collaborative-ready, and portfolio-ready.
+
+🛠 Key Tasks Accomplished
+
+Documentation
+
+Added PROJECT_SETUP.md with full environment + usage instructions.
+
+Documented setup for virtualenv, database, scrapers, and dashboard.
+
+Scraper Fixes
+
+Fixed phishing_scraper.py so it successfully scrapes Google search + Pastebin for phishing URLs.
+
+Outputs stored in CSVs and merged into output/all_phishing_urls.csv.
+
+Dashboard Validation
+
+Verified Flask dashboard runs at 127.0.0.1:5000.
+
+Confirmed /dashboard + API endpoints (/api/trends/*) return expected data.
+
+GitHub Integration
+
+Configured GitHub SSH key (~/.ssh/id_ed25519) for secure pushes.
+
+Corrected remote URL from placeholder → github.com/SirDaniel001/osint-threat-intel.git.
+
+Merged day24-fixes → master and pushed all project history successfully.
+
+📂 Files Added / Updated
+
+PROJECT_SETUP.md — Full setup guide.
+
+day3_phishing_scraper/phishing_scraper.py — Fixed and tested.
+
+dashboard/* — Verified functional templates + API endpoints.
+
+.git/config + SSH key setup — for GitHub authentication.
+
+📊 Final Outputs
+
+✅ Setup guide available for anyone cloning the repo.
+
+✅ Working phishing scraper pipeline with Google + Pastebin feeds.
+
+✅ Dashboard online, serving threat intel stats.
+
+✅ GitHub repo fully synced & backed up.
 🛡 Ethical Use  
 This project is built for educational and ethical security research purposes only.  
 
