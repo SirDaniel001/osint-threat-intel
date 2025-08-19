@@ -1,3 +1,4 @@
+FOR setup instructions, see [PROJECT_SETUP.md](PROJECT_SETUP.md)
 # 🔍 OSINT Threat Intelligence Project
 
 ![OSINT Banner](data/data_banner.png)
