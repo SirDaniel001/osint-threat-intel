@@ -619,3 +619,21 @@ Structuring commits by “Day XX” keeps progress traceable and professional.
 Status
 
 🚀 Project is fully documented, version-controlled, and synced to GitHub — foundation is rock-solid for the final stretch (Day 26–30).
+
+## ✅ Day 25 – Final Setup Guide & GitHub Integration
+
+## Achievements
+- Wrote and added `PROJECT_SETUP.md` with complete setup instructions (environment, DB, scrapers, dashboard, alerts, reports).
+- Updated `requirements.txt` with Day 25 notes (documentation & GitHub integration).
+- Fixed GitHub remote URL to use **SSH keys** for secure authentication.
+- Successfully merged Day 24 fixes into `master` and pushed the entire project to GitHub (`SirDaniel001/osint-threat-intel`).
+- Verified repo is clean, organized, and ready for sharing or further development.
+
+## Lessons Learned
+- Always keep a **PROJECT_SETUP.md** for smooth onboarding and reproducibility.
+- SSH keys are the secure and recommended way to push to GitHub.
+- Proper branch merging avoids conflicts and ensures history stays clean.
+- Documentation is just as critical as code for project success.
+
+## Status
+🎯 Project documentation and GitHub integration complete — **Day 25 wraps up the build phase successfully**.
