@@ -591,3 +591,31 @@ Automate pipeline execution via cron for scheduled intelligence updates.
 ## Status
 🎩 All tests passing — pipeline is optimized, tested, and production-ready.
 
+### ✅ Day 25 – Setup Documentation & GitHub Integration
+Achievements
+
+Wrote PROJECT_SETUP.md with full environment setup and usage instructions.
+
+Fixed and verified phishing_scraper.py to properly scrape Google + Pastebin.
+
+Generated reports and confirmed Flask dashboard works (live at 127.0.0.1:5000).
+
+Set up GitHub SSH authentication (no more password prompts).
+
+Merged local day24-fixes into master and pushed all project updates to GitHub.
+
+Repo is now fully synced and ready for collaboration/portfolio showcase.
+
+Lessons Learned
+
+Always add a setup guide (PROJECT_SETUP.md) to make the project reproducible for others.
+
+GitHub SSH keys are safer and faster than HTTPS passwords.
+
+Rebasing before pushing avoids messy merge commits.
+
+Structuring commits by “Day XX” keeps progress traceable and professional.
+
+Status
+
+🚀 Project is fully documented, version-controlled, and synced to GitHub — foundation is rock-solid for the final stretch (Day 26–30).
