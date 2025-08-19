@@ -719,6 +719,33 @@ dashboard/* — Verified functional templates + API endpoints.
 🛡 Ethical Use  
 This project is built for educational and ethical security research purposes only.  
 
+## ## 📅 Day 25 — Final Setup Guide & GitHub Integration
+
+Date: 2025-08-19  
+Status: ✅ Completed  
+
+🔹 Overview  
+Day 25 focused on **final documentation and repository integration**.  
+We created a complete `PROJECT_SETUP.md` guide, ensured all dependencies were captured in `requirements.txt`, and successfully pushed the full project to GitHub using SSH authentication.  
+
+🛠 Key Tasks Accomplished  
+- Added **PROJECT_SETUP.md** with full environment setup, database init, scraper, and dashboard instructions.  
+- Updated **requirements.txt** with Day 25 notes (documentation & GitHub integration).  
+- Fixed GitHub remote URL and migrated to **SSH keys** for secure authentication.  
+- Successfully merged and pushed all Day 25 changes to the **master branch**.  
+
+📂 Files Added / Updated  
+- `PROJECT_SETUP.md` — Full step-by-step setup guide.  
+- `requirements.txt` — Updated with Day 25 dependency notes.  
+- `README.md` — Updated with final project log entry.  
+
+📊 Final Outputs  
+- ✅ Documentation is clear and beginner-friendly.  
+- ✅ Repo is live and synced to GitHub (`SirDaniel001/osint-threat-intel`).  
+- ✅ Project milestone: 25/30 days completed — foundation is fully stable & documented.  
+
+🎉 This wraps up the **core build phase** — ready for real-world usage, demos, or future extensions.
+
 ⚠ All data used in this project is from publicly accessible, non-restricted OSINT feeds.  
 Do NOT use this platform to interact with systems you are not explicitly authorized to investigate.  
 
