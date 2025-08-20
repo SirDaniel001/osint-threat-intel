@@ -2,7 +2,7 @@
 import sqlite3
 import os
 from datetime import datetime, date, timedelta, timezone
-from fpdf import FPDF
+from fpdf import FPDF, XPos, YPos
 import matplotlib.pyplot as plt
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -73,33 +73,35 @@ def generate_pdf(phishing_count, darkweb_hits, whois_suspicious, chart_path, rec
     pdf.add_page()
 
     # ✅ Unicode font loading
-    pdf.add_font("DejaVu", "", FONT_PATH, uni=True)
+    pdf.add_font("DejaVu", "", FONT_PATH)
     pdf.set_font("DejaVu", "", 16)
 
-    pdf.cell(0, 10, "Financial Threat Intelligence Report", ln=True, align="C")
+    pdf.cell(0, 10, "Financial Threat Intelligence Report", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="C")
 
     pdf.set_font("DejaVu", "", 10)
-    pdf.cell(0, 10, f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}", ln=True)
-    pdf.cell(0, 10, f"Period: {(date.today()-timedelta(days=13)).isoformat()} to {date.today().isoformat()}", ln=True)
+    pdf.cell(0, 10, f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(0, 10, f"Period: {(date.today()-timedelta(days=13)).isoformat()} to {date.today().isoformat()}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     pdf.ln(5)
     pdf.set_font("DejaVu", "", 12)
-    pdf.cell(0, 10, "Key Metrics (Last 14 Days)", ln=True)
+    pdf.cell(0, 10, "Key Metrics (Last 14 Days)", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.set_font("DejaVu", "", 10)
-    pdf.cell(0, 8, f"Phishing Domains: {phishing_count}", ln=True)
-    pdf.cell(0, 8, f"Dark Web Hits: {darkweb_hits}", ln=True)
-    pdf.cell(0, 8, f"WHOIS Flags: {whois_suspicious}", ln=True)
+    pdf.cell(0, 8, f"Phishing Domains: {phishing_count}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(0, 8, f"Dark Web Hits: {darkweb_hits}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(0, 8, f"WHOIS Flags: {whois_suspicious}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     pdf.ln(5)
     pdf.image(chart_path, w=150)
 
     pdf.ln(10)
     pdf.set_font("DejaVu", "", 12)
-    pdf.cell(0, 10, "Recent High-Signal Findings", ln=True)
+    pdf.cell(0, 10, "Recent High-Signal Findings", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.set_font("DejaVu", "", 9)
+
+    # ✅ Fix multi_cell by giving explicit width instead of 0
     for idx, (domain, source, date_found) in enumerate(recent, 1):
         safe_text = f"{idx}. {domain} - {source} - {date_found}"
-        pdf.multi_cell(0, 5, safe_text)
+        pdf.multi_cell(190, 5, safe_text)  # force width to 190mm
 
     pdf_path = "day21_threat_report.pdf"
     pdf.output(pdf_path)
@@ -119,9 +121,12 @@ def send_email(attachment_path):
         msg.attach(part)
 
     with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        server.ehlo()
         server.starttls()
+        server.ehlo()
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
-        server.send_message(msg)
+        server.sendmail(EMAIL_SENDER, EMAIL_RECEIVER, msg.as_string())
+
     print(f"[+] Email sent to {EMAIL_RECEIVER} with attachment {attachment_path}")
 
 if __name__ == "__main__":
