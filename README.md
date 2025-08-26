@@ -1,4 +1,8 @@
 FOR setup instructions, see [PROJECT_SETUP.md](PROJECT_SETUP.md)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge)
+![Finish Date](https://img.shields.io/badge/Finished-24_Aug_2025-blue?style=for-the-badge)
+![Project](https://img.shields.io/badge/Domain-OSINT_Threat_Intel-critical?style=for-the-badge)
+
 # 🔍 OSINT Threat Intelligence Project
 
 ➡️ For installation & usage instructions, see [PROJECT_SETUP.md](PROJECT_SETUP.md)
@@ -745,6 +749,47 @@ We created a complete `PROJECT_SETUP.md` guide, ensured all dependencies were ca
 - ✅ Project milestone: 25/30 days completed — foundation is fully stable & documented.  
 
 🎉 This wraps up the **core build phase** — ready for real-world usage, demos, or future extensions.
+
+## day27
+
+## 📦 Latest Release
+
+The first stable release of **OSINT Threat Intelligence Dashboard** is now live!  
+👉 [Download v1.0.0](https://github.com/SirDaniel001/osint-threat-intel/releases/tag/v1.0.0)
+
+### Included in this Release
+- ✅ Full phishing scraper pipeline  
+- ✅ Secure handling of API keys with `.env`  
+- ✅ Automated PDF report generator  
+- ✅ Dark/Light dashboard themes  
+- ✅ Telegram and Email alerts  
+
+---
+## ---
+
+## 📌 Final Update (Day 28 – 24/08)
+
+✅ Project completed successfully.  
+- All features implemented: data collection, dark web monitoring, WHOIS checks, alerts, dashboard, and reporting.  
+- Full end-to-end testing completed (Day 23–24).  
+- Repository pushed to GitHub (Day 27).  
+- Final presentation prepared with diagrams (Day 28).  
+
+📊 Deliverables include:  
+- **Architecture & workflow diagrams** (`reports/day28_architecture.png`)  
+- **Threat reports & trend charts** (`reports/*.pdf`, `reports/*.png`)  
+- **Clean documentation** (`README.md`, `PROJECT_SETUP.md`)  
+- **Success Journal** (`SUCCESS_JOURNAL.md`)  
+
+🎉 The **OSINT Threat Intelligence Platform** is now production-ready and presentation-ready.
+
+
+## 👨‍💻 Author
+
+**Daniel Muoka Muteti (aka SirDaniel)**  
+Computer Science student at **Karatina University** | Passionate about **Cybersecurity & OSINT**  
+
+📧 Contact: danielmuteti590@gmail.com   0797836201  
 
 ⚠ All data used in this project is from publicly accessible, non-restricted OSINT feeds.  
 Do NOT use this platform to interact with systems you are not explicitly authorized to investigate.  

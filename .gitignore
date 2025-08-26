@@ -8,3 +8,14 @@ data/
 .env
 .env
 .env
+
+# Ignore logs and generated reports
+*.log
+*.txt
+*.pdf
+
+# But keep architecture and final important PDFs + script
+!reports/day27_report.pdf
+!reports/day28_final_report.pdf
+!reports/day28_architecture.png
+!scripts/day28_pdf_report.py

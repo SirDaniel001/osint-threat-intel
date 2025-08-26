@@ -50,3 +50,12 @@ pysqlite3-binary==0.5.4
 # Day 25 dependencies — Documentation & GitHub integration
 # No new pip packages required
 # (Optional) For Git automation: gitpython==3.1.43
+
+# Day 27 dependencies — GitHub release preparation
+# No new pip packages required
+# (Optional) For GitHub API automation: PyGithub==2.5.0
+
+# Day 28 dependencies — Final presentation & diagrams
+# No new pip packages required
+# Diagrams generated with external tools (e.g., draw.io, Lucidchart, DALL·E)
+# All documentation artifacts saved under /reports/
