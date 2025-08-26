@@ -1,2 +1,0 @@
-id,source,threat_type,indicator,description,date_detected,confidence
-2,OpenPhish,phishing,http://malicious-site1.com,,2025-08-07 10:00:00,

@@ -1,20 +1,52 @@
+# ======================
+# Virtual environments & cache
+# ======================
 venv/
 __pycache__/
-*.env
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# ======================
+# Environment & secrets
+# ======================
+.env
+
+# ======================
+# Logs & temp files
+# ======================
 logs/
 *.log
+*.tmp
+*.bak
+*.swp
+
+# ======================
+# Data & database files
+# ======================
 data/
+*.db
+*.sqlite3
 
-.env
-.env
-.env
-
-# Ignore logs and generated reports
-*.log
+# ======================
+# Reports & output
+# ======================
 *.txt
 *.pdf
+output/
+out/
+results/
 
-# But keep architecture and final important PDFs + script
+# ======================
+# Backups
+# ======================
+backups/
+
+# ======================
+# Keep important deliverables (exceptions)
+# ======================
+!reports/day25_report.pdf
 !reports/day27_report.pdf
 !reports/day28_final_report.pdf
 !reports/day28_architecture.png

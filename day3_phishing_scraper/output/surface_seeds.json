@@ -1,5 +1,0 @@
-[
-  {"indicator": "cbk-security.com", "type": "domain", "source": "test_surface", "context": "Seeded test CBK domain"},
-  {"indicator": "mpesa-verify-kenya.net", "type": "domain", "source": "test_surface", "context": "Seeded test MPESA domain"},
-  {"indicator": "support-cbk.org", "type": "domain", "source": "test_surface", "context": "Seeded test CBK support domain"}
-]
